@@ -1,0 +1,19 @@
+;Direccionamiento registro
+
+section .data
+    numero1 dd 5        ; Define un entero de 32 bits con valor 5
+    numero2 dd 7        ; Define un entero de 32 bits con valor 7
+    resultado dd 0      ; Define un entero de 32 bits para almacenar el resultado
+
+section .text
+    global _start
+
+_start:
+    mov eax, dword [numero1] ; Mueve el valor de numero1 a eax
+    add eax, dword [numero2] ; Suma el valor de numero2 a eax
+    mov dword [resultado], eax ; Guarda el resultado en resultado
+
+    ; Llamada al sistema sys_exit para salir del programa
+    mov eax, 1         ; Código de llamada para sys_exit
+    xor ebx, ebx       ; Código de salida 0
+    int 0x80           ; Llamada al kernel
