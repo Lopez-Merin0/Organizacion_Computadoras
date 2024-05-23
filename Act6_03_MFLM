@@ -1,0 +1,18 @@
+section .data
+    val1 db 0xAA
+    val2 db 0x55
+    result db 0x00
+
+section .text
+    global _start
+
+_start:
+    mov al, [val1]       ; Mueve el valor de val1 al registro AL
+    mov bl, [val2]       ; Mueve el valor de val2 al registro BL
+    xor al, bl           ; Realiza la operación XOR entre AL y BL, el resultado queda en AL
+    mov [result], al     ; Mueve el resultado a la variable result
+
+    ; Llamada al sistema sys_exit para salir del programa
+    mov eax, 1           ; Número de llamada al sistema para sys_exit
+    xor ebx, ebx         ; Código de salida 0
+    int 0x80             ; Llamada al kernel
