@@ -1,0 +1,17 @@
+;Direccionamiento inmediato
+
+section .data
+    resultado dd 0        ; Define un entero de 32 bits para almacenar el resultado
+
+section .text
+    global _start
+
+_start:
+    mov eax, 5            ; Mueve el valor inmediato 5 a eax
+    add eax, 7            ; Suma el valor inmediato 7 a eax
+    mov [resultado], eax  ; Guarda el resultado en resultado
+
+    ; Llamada al sistema sys_exit para salir del programa
+    mov eax, 1            ; Código de llamada para sys_exit
+    xor ebx, ebx          ; Código de salida 0
+    int 0x80              ; Llamada al kernel
