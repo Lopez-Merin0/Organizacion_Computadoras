@@ -1,0 +1,16 @@
+; Ejemplo de acceso a una región de memoria compartida
+
+section .data
+    shared_data db "Shared data", 0 ; Datos compartidos
+
+section .text
+    global _start
+
+_start:
+    ; Acceso a la región de memoria compartida
+    mov eax, shared_data
+
+    ; Salir del programa
+    mov eax, 1
+    xor ebx, ebx
+    int 0x80
