@@ -1,0 +1,38 @@
+section .data
+    msg db "Hello, world!", 0xA  ; Mensaje a imprimir
+    len equ $ - msg              ; Longitud del mensaje
+
+section .text
+    global _start
+
+_start:
+    ; Guardar el valor de EBP en la pila para preservarlo
+    push ebp
+    ; Establecer EBP como el nuevo puntero de marco
+    mov ebp, esp
+
+    ; Llamar a la función print_message y pasar el puntero al mensaje como argumento
+    mov eax, msg       ; Argumento para la función print_message
+    call print_message
+
+    ; Restaurar el puntero de pila original
+    mov esp, ebp
+    ; Sacar el valor de EBP de la pila
+    pop ebp
+
+    ; Salir del programa
+    mov eax, 1
+    xor ebx, ebx
+    int 0x80
+
+print_message:
+    ; Recuperar el argumento de la función desde la pila
+    mov ecx, [ebp + 8]   ; El argumento está en la posición ebp + 8
+
+    ; Escribir el mensaje en la salida estándar
+    mov eax, 4           ; Número de syscall para escribir en la salida estándar
+    mov ebx, 1           ; Descriptor de archivo para la salida estándar (stdout)
+    mov edx, len         ; Longitud del mensaje
+    int 0x80             ; Llamada al sistema para escribir en la salida estándar
+
+    ret                  ; Devolver el control al código que llamó a esta función
