@@ -1,0 +1,48 @@
+; Programa de Prueba 1
+
+section .data
+    ; Define un mensaje que se muestra si el número es mayor o igual a 10
+    msg_greater db "El numero es mayor o igual a 10", 0xA
+    len_msg_greater equ $ - msg_greater ; Calcula la longitud del mensaje
+
+    ; Define un mensaje que se muestra si el número es menor a 10
+    msg_lower db "El numero es menor a 10", 0xA
+    len_msg_lower equ $ - msg_lower ; Calcula la longitud del mensaje
+
+section .bss
+    ; Reserva un espacio para una variable de 32 bits (4 bytes)
+    number resd 1
+
+section .text
+    global _start ; Define la etiqueta global _start, que es el punto de entrada del programa
+
+_start:
+    ; Inicializa la variable 'number' con el valor 1
+    mov dword [number], 1
+
+    ; Carga el valor de 'number' en eax para compararlo
+    mov eax, dword [number]
+    cmp eax, 10 ; Compara el valor de 'number' con 10
+    jge greater_than_or_equal ; Si 'number' es mayor o igual a 10, salta a greater_than_or_equal
+
+    ; Si 'number' es menor a 10, ejecuta el siguiente bloque de código
+    mov eax, 4 ; Código de la llamada al sistema para escribir (sys_write)
+    mov ebx, 1 ; Descriptor de archivo para la salida estándar
+    mov ecx, msg_lower ; Dirección del mensaje "El numero es menor a 10"
+    mov edx, len_msg_lower ; Longitud del mensaje
+    int 0x80 ; Llama al kernel para realizar la salida
+    jmp end_if_else ; Salta al final del bloque if-else
+
+greater_than_or_equal:
+    ; Si 'number' es mayor o igual a 10, ejecuta el siguiente bloque de código
+    mov eax, 4 ; Código de la llamada al sistema para escribir (sys_write)
+    mov ebx, 1 ; Descriptor de archivo para la salida estándar
+    mov ecx, msg_greater ; Dirección del mensaje "El numero es mayor o igual a 10"
+    mov edx, len_msg_greater ; Longitud del mensaje
+    int 0x80 ; Llama al kernel para realizar la salida
+
+end_if_else:
+    ; Finaliza el programa
+    mov eax, 1 ; Código de la llamada al sistema para salir (sys_exit)
+    xor ebx, ebx ; Código de retorno 0 (ningún error)
+    int 0x80 ; Llama al kernel para finalizar el programa
