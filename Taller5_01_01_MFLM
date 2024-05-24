@@ -1,0 +1,21 @@
+; Ejemplo de syscall para imprimir un mensaje en pantalla
+
+section .data
+    msg db "Hello, world!", 0xA ; Mensaje a imprimir
+    len equ $ - msg             ; Longitud del mensaje
+
+section .text
+    global _start
+
+_start:
+    ; Cargar los valores necesarios para la llamada al sistema
+    mov eax, 4                   ; Número de syscall para escribir en la salida estándar
+    mov ebx, 1                   ; Descriptor de archivo para la salida estándar (stdout)
+    mov ecx, msg                 ; Dirección del mensaje a imprimir
+    mov edx, len                 ; Longitud del mensaje
+    int 0x80                     ; Llamada al sistema para escribir en la salida estándar
+
+    ; Salir del programa
+    mov eax, 1                   ; Número de syscall para salir del programa
+    xor ebx, ebx                 ; Código de retorno 0 (sin errores)
+    int 0x80                     ; Llamada al sistema para salir del programa
