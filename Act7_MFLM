@@ -1,4 +1,5 @@
-; Definición de una macro llamada print_int que toma un argumento
+; Explicar el funcionamiento del siguiente código
+
 %macro print_int 1
     mov eax, 4       ; Llamada al sistema para escribir (sys_write)
     mov ebx, 1       ; Descriptor de archivo estándar de salida (STDOUT)
