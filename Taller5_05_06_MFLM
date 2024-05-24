@@ -1,0 +1,7 @@
+; Ejemplo en código ensamblador utilizando vectorcall
+
+global _vectorcall_example@8
+_vectorcall_example@8:
+    ; Los parámetros están pasados en registros y algunos en la pila
+    ; Código de la función aquí
+    ret 8               ; Limpia la pila y retorna
