@@ -1,7 +1,7 @@
 ;Direccionamiento inmediato
 
 section .data
-    resultado dd 0        ; Define un entero de 32 bits para almacenar el resultado
+    resultado dd 0        
 
 section .text
     global _start
