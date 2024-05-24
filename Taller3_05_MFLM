@@ -1,0 +1,81 @@
+; Programa de Prueba 2 - Modificado para probar diferentes valores de [number]
+
+section .data
+    msg_lower db "El numero es menor a 10", 0xA
+    len_msg_lower equ $ - msg_lower
+
+    msg_greater db "El numero es mayor o igual a 10", 0xA
+    len_msg_greater equ $ - msg_greater
+
+    msg_invalid db "El valor no es un número valido", 0xA
+    len_msg_invalid equ $ - msg_invalid
+
+section .bss
+    number resd 1
+
+%macro imprimir_mensaje 2
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, %1
+    mov edx, %2
+    int 0x80
+%endmacro
+
+section .text
+    global _start
+
+_start:
+    ; Prueba con un número mayor a 10
+    mov dword [number], 15
+    call check_number
+
+    ; Prueba con un número menor a 10
+    mov dword [number], 5
+    call check_number
+
+    ; Prueba con el número 10
+    mov dword [number], 10
+    call check_number
+
+    ; Prueba con un string
+    mov dword [number], str_number
+    call check_string
+
+    ; Salida del programa
+    mov eax, 1
+    xor ebx, ebx
+    int 0x80
+
+check_number:
+    mov eax, dword [number]
+    cmp eax, 10
+    jge greater_than_or_equal
+
+    imprimir_mensaje msg_lower, len_msg_lower
+    jmp end_check
+
+greater_than_or_equal:
+    imprimir_mensaje msg_greater, len_msg_greater
+
+end_check:
+    ret
+
+check_string:
+    mov eax, dword [number]
+    test eax, eax
+    jz print_invalid
+
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, msg_invalid
+    mov edx, len_msg_invalid
+    int 0x80
+    jmp end_check
+
+print_invalid:
+    ; Imprime un mensaje si el valor en [number] es un puntero a NULL (0)
+    imprimir_mensaje msg_invalid, len_msg_invalid
+    jmp end_check
+
+section .data
+    str_number db "Test"  ; Ejemplo de una cadena de prueba
