@@ -1,0 +1,32 @@
+; Definición de una macro llamada print_int que toma un argumento
+%macro print_int 1
+    mov eax, 4       ; Llamada al sistema para escribir (sys_write)
+    mov ebx, 1       ; Descriptor de archivo estándar de salida (STDOUT)
+    mov ecx, %1      ; Dirección del valor a imprimir (en este caso, el acumulador)
+    mov edx, 4       ; Longitud del valor a imprimir (en bytes)
+    int 0x80         ; Interrupción del sistema para realizar la llamada al sistema
+%endmacro
+
+section .data
+    array dd 1, 2, 3, 4, 5 ;Arreglo de datos inicializado con los valores 1, 2, 3, 4, 5
+
+section .text
+    global _start   
+
+_start:
+    mov ecx, 0       ; Inicialización del índice de bucle a 0
+    mov eax, 0       ; Inicialización del acumulador a 0
+
+bucle:
+    mov ebx, [array + ecx*4]  ; Carga el valor del arreglo en ebx
+    add eax, ebx              ; Suma el valor del arreglo al acumulador
+
+    inc ecx                    ; Incrementa el índice de bucle para acceder al siguiente elemento
+    cmp ecx, 5                 ; Compara el índice de bucle con 5 (el tamaño del arreglo)
+    jl bucle                   ; Salta de vuelta al bucle si el índice es menor que 5
+
+    print_int eax               ; Llama a la macro print_int para imprimir el valor acumulado
+
+    mov eax, 1                  ; Prepara el código de salida para la llamada al sistema exit
+    xor ebx, ebx                ; Limpia ebx (no se usa en esta llamada al sistema)
+    int 0x80                    ; Llama al sistema para salir del programa
