@@ -1,0 +1,43 @@
+; Programa de Prueba 2
+section .data
+ msg_lower db "El numero es menor a 10", 0xA
+ len_msg_lower equ $ - 
+ 
+ msg_greater db "El numero es mator o igual a 10", 0xA
+ len_msg_greater equ $ - msg_greater
+ 
+ 
+section .bss
+ number resd 1
+ 
+%macro imptimit_mensaje 2
+ mov eax,4
+ mov ebx,1
+ mov ecx,%1
+ mov edx, %2
+ int 0x80
+%endmacro
+ 
+section .text
+ global _start
+ 
+_start:
+
+ mov dword [number],1
+ 
+ mov eax, dword [number]
+ cmp eax,10
+ jge greater_than_or_equal
+ 
+ imprimir_mensaje msg_lower,len_msg_lower
+ jmp end_if_else
+ 
+greater_than_or_equal:
+
+ imprimir_mensaje msg_greater,len_msg_greater
+
+end_if_else
+ mov eax,1
+ mov ebx,ebx
+ int 0x80
+ jmp end_if_else
