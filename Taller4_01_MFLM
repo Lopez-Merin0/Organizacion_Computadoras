@@ -1,0 +1,21 @@
+; Programa de Prueba 1
+
+section .data
+    debug_msg db "Debugging message", 0xA ; Define una cadena de depuración seguida de un carácter de nueva línea
+    debug_len equ $ - debug_msg ; Calcula la longitud de la cadena debug_msg
+
+section .text
+    global _start ; Define _start como el punto de entrada global del programa
+
+_start:
+    ; Imprime el mensaje de depuración
+    mov eax, 4       ; Código de la llamada al sistema para escribir (sys_write)
+    mov ebx, 1       ; Descriptor de archivo para la salida estándar
+    mov ecx, debug_msg ; Dirección del mensaje a imprimir
+    mov edx, debug_len ; Longitud del mensaje
+    int 0x80         ; Llamada al sistema para realizar la salida
+
+    ; Finaliza el programa
+    mov eax, 1       ; Código de la llamada al sistema para salir (sys_exit)
+    xor ebx, ebx     ; Código de retorno 0 (ningún error)
+    int 0x80         ; Llamada al sistema para finalizar el programa
