@@ -1,0 +1,67 @@
+section .data
+    msg db "Ingresa dos numeros de un digito: ", 0
+    len equ $ - msg
+    result db "El resultado es: ", 0
+    len_result equ $ - result
+
+section .bss
+    num1 resb 2
+    num2 resb 2
+    res resb 1
+
+section .text
+    global _start
+
+_start:
+
+; Imprime el mensaje para ingresar dos números
+mov eax, 4            ; syscall número (write)
+mov ebx, 1            ; file descriptor (stdout)
+mov ecx, msg          ; puntero al mensaje
+mov edx, len          ; longitud del mensaje
+int 0x80              ; syscall para escribir en la salida estándar
+
+; Lee el primer número
+mov eax, 3            ; syscall número (read)
+mov ebx, 0            ; file descriptor (stdin)
+mov ecx, num1         ; puntero al espacio reservado para elprimer número
+mov edx, 2            ; longitud a leer (1 byte para el número y 1 byte para el salto de línea)
+int 0x80              ; syscall para leer de la entrada estándar
+
+; Lee el segundo número
+mov eax, 3            ; syscall (read)
+mov ebx, 0            ; file descriptor (stdin)
+mov ecx, num2         ; puntero al espacio reservado para el segundo número
+mov edx, 2            ; longitud a leer (1 byte para el número y 1 byte para el salto de línea)
+int 0x80              ; syscall para leer de la entrada estándar
+
+; Calcula la suma de los dos números ingresados
+mov al, [num1]        ; Carga el primer número ingresado en AL
+sub al, '0'           ; Convierte el carácter ASCII en su valor numérico
+
+mov bl, [num2]        ; Carga el segundo número ingresado en BL
+sub bl, '0'           ; Convierte el carácter ASCII en su valor numérico
+
+add al, bl            ; Suma los números
+add al, '0'           ; Convierte el resultado de nuevo a carácter ASCII
+
+mov [res], al         ; Guarda el resultado de la suma en res
+
+; Imprime el mensaje de resultado
+mov eax, 4            ; syscall (write)
+mov ebx, 1            ; file descriptor (stdout)
+mov ecx, result       ; puntero al mensaje de resultado
+mov edx, len_result   ; longitud del mensaje de resultado
+int 0x80              ; syscall para escribir en la salida estándar
+
+; Imprime el resultado
+mov eax, 4            ; syscall (write)
+mov ebx, 1            ; file descriptor (stdout)
+mov ecx, res          ; puntero al resultado
+mov edx, 1            ; longitud del resultado (1 byte)
+int 0x80              ; syscall para escribir en la salida estándar
+
+; Salida del programa
+mov eax, 1            ; syscall (exit)
+xor ebx, ebx          ; código de retorno 0 (ningún error)
+int 0x80              ; syscall para finalizar el programa
