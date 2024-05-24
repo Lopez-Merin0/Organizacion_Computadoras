@@ -1,0 +1,79 @@
+; Programa de Prueba 2 - Comparación múltiple usando if/else
+
+section .data
+    msg_greater_than_30 db "El numero es mayor a 30", 0xA
+    len_msg_greater_than_30 equ $ - msg_greater_than_30
+
+    msg_between_20_and_30 db "El numero esta entre 21 y 30", 0xA
+    len_msg_between_20_and_30 equ $ - msg_between_20_and_30
+
+    msg_between_10_and_20 db "El numero esta entre 11 y 20", 0xA
+    len_msg_between_10_and_20 equ $ - msg_between_10_and_20
+
+    msg_10_or_less db "El numero es 10 o menor", 0xA
+    len_msg_10_or_less equ $ - msg_10_or_less
+
+section .bss
+    number resd 1
+
+section .text
+    global _start
+
+_start:
+    ; Inicializa la variable 'number' con un valor para la prueba
+    mov dword [number], 25 ; Puedes cambiar este valor para probar diferentes casos
+
+    ; Carga el valor de 'number' en eax para compararlo
+    mov eax, dword [number]
+
+    ; Comparar con 30
+    cmp eax, 30
+    jg greater_than_30 ; Si eax es mayor que 30, salta a greater_than_30
+
+    ; Comparar con 20
+    cmp eax, 20
+    jg between_21_and_30 ; Si eax es mayor que 20, salta a between_21_and_30
+
+    ; Comparar con 10
+    cmp eax, 10
+    jg between_11_and_20 ; Si eax es mayor que 10, salta a between_11_and_20
+
+    ; Si ninguna de las anteriores condiciones se cumple, entonces es 10 o menor
+    mov eax, 4 ; Código de la llamada al sistema para escribir (sys_write)
+    mov ebx, 1 ; Descriptor de archivo para la salida estándar
+    mov ecx, msg_10_or_less ; Dirección del mensaje "El numero es 10 o menor"
+    mov edx, len_msg_10_or_less ; Longitud del mensaje
+    int 0x80 ; Llama al kernel para realizar la salida
+    jmp end_if_else ; Salta al final del bloque if-else
+
+between_11_and_20:
+    ; Si el valor es entre 11 y 20, ejecuta este bloque de código
+    mov eax, 4 ; Código de la llamada al sistema para escribir (sys_write)
+    mov ebx, 1 ; Descriptor de archivo para la salida estándar
+    mov ecx, msg_between_10_and_20 ; Dirección del mensaje "El numero esta entre 11 y 20"
+    mov edx, len_msg_between_10_and_20 ; Longitud del mensaje
+    int 0x80 ; Llama al kernel para realizar la salida
+    jmp end_if_else ; Salta al final del bloque if-else
+
+between_21_and_30:
+    ; Si el valor es entre 21 y 30, ejecuta este bloque de código
+    mov eax, 4 ; Código de la llamada al sistema para escribir (sys_write)
+    mov ebx, 1 ; Descriptor de archivo para la salida estándar
+    mov ecx, msg_between_20_and_30 ; Dirección del mensaje "El numero esta entre 21 y 30"
+    mov edx, len_msg_between_20_and_30 ; Longitud del mensaje
+    int 0x80 ; Llama al kernel para realizar la salida
+    jmp end_if_else ; Salta al final del bloque if-else
+
+greater_than_30:
+    ; Si el valor es mayor a 30, ejecuta este bloque de código
+    mov eax, 4 ; Código de la llamada al sistema para escribir (sys_write)
+    mov ebx, 1 ; Descriptor de archivo para la salida estándar
+    mov ecx, msg_greater_than_30 ; Dirección del mensaje "El numero es mayor a 30"
+    mov edx, len_msg_greater_than_30 ; Longitud del mensaje
+    int 0x80 ; Llama al kernel para realizar la salida
+
+end_if_else:
+    ; Finaliza el programa
+    mov eax, 1 ; Código de la llamada al sistema para salir (sys_exit)
+    xor ebx, ebx ; Código de retorno 0 (ningún error)
+    int 0x80 ; Llama al kernel para finalizar el programa
