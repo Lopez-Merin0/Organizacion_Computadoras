@@ -1,0 +1,20 @@
+; Código en ensamblador x86
+
+section .data
+    ; Declaración de los datos necesarios (si los hay)
+
+section .text
+    global _start
+
+_start:
+    ; Llamar a la función C add_numbers
+    mov eax, 5           ; Primer argumento (a)
+    mov ebx, 7           ; Segundo argumento (b)
+    call add_numbers     ; Llamar a la función add_numbers en C
+
+    ; El resultado estará ahora en eax
+
+    ; Salir del programa
+    mov eax, 1
+    xor ebx, ebx
+    int 0x80
