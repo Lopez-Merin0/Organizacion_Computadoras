@@ -1,0 +1,8 @@
+; Ejemplo en código ensamblador utilizando fastcall
+
+global _fastcall_example@8
+_fastcall_example@8:
+    ; Acceder a los parámetros pasados en los registros ECX y EDX
+    ; Y los siguientes en la pila
+    ; Código de la función aquí
+    ret 8               ; Limpia la pila y retorna
