@@ -1,9 +1,9 @@
 ;Direccionamiento registro
 
 section .data
-    numero1 dd 5        ; Define un entero de 32 bits con valor 5
-    numero2 dd 7        ; Define un entero de 32 bits con valor 7
-    resultado dd 0      ; Define un entero de 32 bits para almacenar el resultado
+    numero1 dd 5        
+    numero2 dd 7        
+    resultado dd 0   
 
 section .text
     global _start
