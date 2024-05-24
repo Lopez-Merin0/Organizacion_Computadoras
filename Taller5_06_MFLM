@@ -1,0 +1,10 @@
+; Ejemplo en código ensamblador utilizando cdecl
+
+global _cdecl_example
+_cdecl_example:
+    push ebp            ; Guarda el puntero base del marco de pila
+    mov ebp, esp        ; Establece el nuevo puntero base del marco de pila
+    ; Acceder a los parámetros pasados en la pila usando [ebp + offset]
+    ; Código de la función aquí
+    pop ebp             ; Restaura el puntero base del marco de pila
+    ret                 ; Retorna de la función
