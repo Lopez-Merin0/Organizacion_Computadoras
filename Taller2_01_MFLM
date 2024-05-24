@@ -13,7 +13,6 @@ _start:
     add eax, dword [numero2] ; Suma el valor de numero2 a eax
     mov dword [resultado], eax ; Guarda el resultado en resultado
 
-    ; Llamada al sistema sys_exit para salir del programa
     mov eax, 1         ; Código de llamada para sys_exit
     xor ebx, ebx       ; Código de salida 0
     int 0x80           ; Llamada al kernel
