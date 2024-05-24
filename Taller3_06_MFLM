@@ -1,0 +1,74 @@
+; Programa de Prueba 3 - Estructura if/else con diferentes parámetros
+
+section .data
+    msg_10_or_less db "El numero es menor o igual a 10", 0xA
+    len_msg_10_or_less equ $ - msg_10_or_less
+
+    msg_between_11_and_20 db "El numero esta entre 11 y 20", 0xA
+    len_msg_between_11_and_20 equ $ - msg_between_11_and_20
+
+    msg_between_21_and_30 db "El numero esta entre 21 y 30", 0xA
+    len_msg_between_21_and_30 equ $ - msg_between_21_and_30
+
+    msg_greater_than_30 db "El numero es mayor a 30", 0xA
+    len_msg_greater_than_30 equ $ - msg_greater_than_30
+
+section .bss
+    number resd 1
+
+section .text
+    global _start
+
+_start:
+    ; Inicializa la variable 'number' con un valor para la prueba
+    mov dword [number], 25 ; Puedes cambiar este valor para probar diferentes casos
+
+    ; Carga el valor de 'number' en el registro eax para compararlo
+    mov eax, dword [number]
+
+    ; Comparar con 10
+    cmp eax, 10
+    jle less_than_or_equal ; Si el valor es menor o igual a 10, salta a less_than_or_equal
+
+    ; Comparar con 20
+    cmp eax, 20
+    jle between_11_and_20 ; Si el valor es menor o igual a 20, salta a between_11_and_20
+
+    ; Comparar con 30
+    cmp eax, 30
+    jle between_21_and_30 ; Si el valor es menor o igual a 30, salta a between_21_and_30
+
+    ; Si el valor es mayor que 30, imprime el mensaje correspondiente
+    imprimir_mensaje msg_greater_than_30, len_msg_greater_than_30
+    jmp end_if_else ; Salta al final del bloque if-else
+
+less_than_or_equal:
+    ; Si el valor es menor o igual a 10, imprime el mensaje correspondiente
+    imprimir_mensaje msg_10_or_less, len_msg_10_or_less
+    jmp end_if_else ; Salta al final del bloque if-else
+
+between_11_and_20:
+    ; Si el valor está entre 11 y 20, imprime el mensaje correspondiente
+    imprimir_mensaje msg_between_11_and_20, len_msg_between_11_and_20
+    jmp end_if_else ; Salta al final del bloque if-else
+
+between_21_and_30:
+    ; Si el valor está entre 21 y 30, imprime el mensaje correspondiente
+    imprimir_mensaje msg_between_21_and_30, len_msg_between_21_and_30
+
+end_if_else:
+    ; Finaliza el programa
+    mov eax, 1 ; Código de salida del programa (sys_exit)
+    xor ebx, ebx ; Código de retorno 0 (ningún error)
+    int 0x80 ; Llama al kernel para finalizar el programa
+
+; Macro para imprimir un mensaje
+; %1: Dirección del mensaje
+; %2: Longitud del mensaje
+%macro imprimir_mensaje 2
+ mov eax, 4      ; Código de la llamada al sistema para escribir (sys_write)
+ mov ebx, 1      ; Descriptor de archivo para la salida estándar
+ mov ecx, %1     ; Dirección del mensaje
+ mov edx, %2     ; Longitud del mensaje
+ int 0x80        ; Llama al kernel para realizar la salida
+%endmacro
