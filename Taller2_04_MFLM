@@ -1,4 +1,4 @@
-;Direccionamiento directo
+;Direccionamiento registro indirecto
 
 section .data
 numero1 dd 5         ; Define una variable de 32 bits (4 bytes) llamada "numero1" y la inicializa con 5
@@ -8,10 +8,13 @@ resultado dd 0       ; Define una variable de 32 bits (4 bytes) llamada "resulta
 section .text
 global _start        ; Define la etiqueta global _start, que es el punto de entrada del programa
 _start:
-    mov eax, [numero1]   ; Mueve el valor de la variable "numero1" al registro eax
-    add eax, [numero2]   ; Suma el valor de la variable "numero2" al valor actual de eax
-    mov [resultado], eax ; Guarda el valor de eax (la suma) en la variable "resultado"
+    mov ebx, numero1   ; Carga la dirección de memoria de "numero1" en el registro ebx
+    mov eax, [ebx]     ; Mueve el valor apuntado por ebx (valor de "numero1") a eax
+    add ebx, 4         ; Avanza el puntero para apuntar a "numero2" (sumando 4 bytes, ya que son números de 32 bits)
+    add eax, [ebx]     ; Suma el valor apuntado por ebx (valor de "numero2") a eax
+    mov ebx, resultado ; Carga la dirección de memoria de "resultado" en ebx
+    mov [ebx], eax     ; Guarda el resultado (valor de eax) en la dirección de memoria de "resultado"
     
-    mov eax, 1           ; Código de la llamada al sistema para salir (sys_exit)
-    xor ebx, ebx         ; Limpia el registro ebx, poniéndolo a 0 (esto será el código de retorno)
-    int 0x80             ; Interrupción de software para llamar al kernel y ejecutar la llamada al sistema
+    mov eax, 1         ; Código de la llamada al sistema para salir (sys_exit)
+    xor ebx, ebx       ; Limpia el registro ebx, poniéndolo a 0 (esto será el código de retorno)
+    int 0x80           ; Interrupción de software para llamar al kernel y ejecutar la llamada al sistema
