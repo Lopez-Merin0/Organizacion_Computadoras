@@ -1,3 +1,5 @@
+; Modifica el programa para que imprima la nueva cadena en su totalidad y explica tus cambios
+
 section .data
     nuevo_mensaje db 'Hola Mundo Cruel y Frio', 0
 
