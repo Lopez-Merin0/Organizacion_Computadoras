@@ -11,7 +11,6 @@ _start:
     add eax, 7            ; Suma el valor inmediato 7 a eax
     mov [resultado], eax  ; Guarda el resultado en resultado
 
-    ; Llamada al sistema sys_exit para salir del programa
     mov eax, 1            ; Código de llamada para sys_exit
-    xor ebx, ebx          ; Código de salida 0
+    xor ebx, ebx          ; Código de retorno 0
     int 0x80              ; Llamada al kernel
