@@ -1,0 +1,86 @@
+; Programa de Prueba 2
+section .data
+    msg_greater db "El numero es mayor o igual a 10", 0xA
+    len_msg_greater equ $ - msg_greater
+
+    msg_lower db "El numero es menor a 10", 0xA
+    len_msg_lower equ $ - msg_lower
+
+    msg_is_string db "El valor es una cadena, no un numero", 0xA
+    len_msg_is_string equ $ - msg_is_string
+
+section .bss
+    number resd 1
+    str_number resb 16 ; Espacio para almacenar una cadena
+
+section .text
+    global _start
+
+_start:
+    ; Caso 1: número mayor a 10
+    mov dword [number], 15
+    call check_value
+
+    ; Caso 2: número menor a 10
+    mov dword [number], 5
+    call check_value
+
+    ; Caso 3: número igual a 10
+    mov dword [number], 10
+    call check_value
+
+    ; Caso 4: valor es una cadena
+    mov eax, str_number
+    mov [eax], 'T'
+    mov [eax + 1], 'e'
+    mov [eax + 2], 's'
+    mov [eax + 3], 't'
+    mov [eax + 4], 0 ; Fin de cadena
+    call check_string
+
+    ; Salida del programa
+    mov eax, 1 ; Código de salida del programa (sys_exit)
+    xor ebx, ebx ; Código de retorno 0 (ningún error)
+    int 0x80 ; Llama al kernel para finalizar el programa
+
+check_value:
+    mov eax, dword [number]
+    cmp eax, 10
+    jge greater_than_or_equal
+
+    mov eax, 4 ; Código de la llamada al sistema para escribir (sys_write)
+    mov ebx, 1 ; Descriptor de archivo para la salida estándar
+    mov ecx, msg_lower ; Dirección del mensaje "El numero es menor a 10"
+    mov edx, len_msg_lower ; Longitud del mensaje
+    int 0x80
+    jmp end_if_else
+
+greater_than_or_equal:
+    mov eax, 4 ; Código de la llamada al sistema para escribir (sys_write)
+    mov ebx, 1 ; Descriptor de archivo para la salida estándar
+    mov ecx, msg_greater ; Dirección del mensaje "El numero es mayor o igual a 10"
+    mov edx, len_msg_greater ; Longitud del mensaje
+    int 0x80
+
+end_if_else:
+    ret
+
+check_string:
+    mov eax, str_number
+    mov ecx, 0
+check_loop:
+    mov bl, byte [eax + ecx]
+    cmp bl, 0
+    je is_string
+    inc ecx
+    cmp ecx, 16
+    jl check_loop
+    jmp end_if_else
+
+is_string:
+    mov eax, 4 ; Código de la llamada al sistema para escribir (sys_write)
+    mov ebx, 1 ; Descriptor de archivo para la salida estándar
+    mov ecx, msg_is_string ; Dirección del mensaje "El valor es una cadena, no un numero"
+    mov edx, len_msg_is_string ; Longitud del mensaje
+    int 0x80
+    jmp end_if_else
