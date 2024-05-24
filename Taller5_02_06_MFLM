@@ -1,0 +1,8 @@
+; Ejemplo en código ensamblador utilizando stdcall
+
+extern _stdcall_example@8
+_stdcall_example proc
+    ; Acceder a los parámetros pasados en la pila usando [esp + offset]
+    ; Código de la función aquí
+    ret 8               ; Limpia la pila y retorna
+_stdcall_example endp
