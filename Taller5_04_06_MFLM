@@ -1,0 +1,8 @@
+; Ejemplo en código ensamblador utilizando thiscall
+
+global _thiscall_example@8
+_thiscall_example@8:
+    ; El puntero al objeto (this) está en ECX
+    ; Los demás parámetros están en la pila
+    ; Código de la función aquí
+    ret 8               ; Limpia la pila y retorna
