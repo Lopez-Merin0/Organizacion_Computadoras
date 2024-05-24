@@ -7,14 +7,15 @@ resultado dd 0
 
 section .text
 global _start       
+
 _start:
-    mov ebx, numero1   ; Carga la dirección de memoria de "numero1" en el registro ebx
+    mov ebx, numero1   ; Carga la dirección de memoria de "numero1" en ebx
     mov eax, [ebx]     ; Mueve el valor apuntado por ebx (valor de "numero1") a eax
-    add ebx, 4         ; Avanza el puntero para apuntar a "numero2" (sumando 4 bytes, ya que son números de 32 bits)
+    add ebx, 4         ; Avanza el puntero para apuntar a "numero2" 
     add eax, [ebx]     ; Suma el valor apuntado por ebx (valor de "numero2") a eax
     mov ebx, resultado ; Carga la dirección de memoria de "resultado" en ebx
-    mov [ebx], eax     ; Guarda el resultado (valor de eax) en la dirección de memoria de "resultado"
+    mov [ebx], eax     ; Guarda el resultado en la dirección de memoria de "resultado"
     
-    mov eax, 1         ; Código de la llamada al sistema para salir (sys_exit)
-    xor ebx, ebx       ; Limpia el registro ebx, poniéndolo a 0 (esto será el código de retorno)
-    int 0x80           ; Interrupción de software para llamar al kernel y ejecutar la llamada al sistema
+    mov eax, 1         ; Código de salida del programa (sys_exit)
+    xor ebx, ebx       ; Codigo de retorno 0
+    int 0x80           ; Llamada de salida
