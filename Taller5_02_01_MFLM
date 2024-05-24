@@ -1,0 +1,13 @@
+; Ejemplo de acceso a un puerto de E/S para leer un byte de datos
+
+section .text
+    global _start
+
+_start:
+    ; Leer un byte de datos del puerto 0x60 (teclado)
+    in al, 0x60
+
+    ; Salir del programa
+    mov eax, 1
+    xor ebx, ebx
+    int 0x80
