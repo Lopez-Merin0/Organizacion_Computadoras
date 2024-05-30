@@ -1,4 +1,4 @@
-; Ejemplo de instrucción in para leer un byte de datos del puerto 0x60
+; Ejemplo de instrucción in para leer un byte de datos del puerto E/S 0x60
 
 section .text
     global _start
