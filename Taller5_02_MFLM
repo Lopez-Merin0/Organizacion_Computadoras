@@ -1,4 +1,9 @@
-; Código en ensamblador x86
+; Realizar una llamada a una función externa escrita en C desde un programa en ensamblador x86 y viceversa
+
+// Función en C
+int add_numbers(int a, int b) {
+return a + b;
+}
 
 section .data
     ; Declaración de los datos necesarios (si los hay)
