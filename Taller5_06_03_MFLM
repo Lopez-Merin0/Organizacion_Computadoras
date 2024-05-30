@@ -6,3 +6,4 @@ _fastcall_example@8:
     ; Y los siguientes en la pila
     ; Código de la función aquí
     ret 8               ; Limpia la pila y retorna
+
