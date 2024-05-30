@@ -1,9 +1,10 @@
+// Utilizando instrucciones en línea para sumar a y b en ensamblador
+
 #include <stdio.h>
 
 int main() {
     int a = 5, b = 7, result;
 
-    // Utilizando instrucciones en línea para sumar a y b en ensamblador
     __asm__ (
         "mov eax, %[a]\n"   // Mover el valor de a a eax
         "add eax, %[b]\n"   // Sumar el valor de b a eax
